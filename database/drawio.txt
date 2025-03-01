@@ -1,1 +1,7 @@
 https://drive.google.com/file/d/1Qb9f4kt-w7J0IjtYzDLWrmccATOTPVwK/view?usp=sharing
+
+
+git branch -a
+git checkout (select a branch)
+git merge (branch)
+
