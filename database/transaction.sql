@@ -1,3 +1,4 @@
+--updated
 -- Create the database
 CREATE DATABASE inventorysystem;
 USE inventorysystem;
