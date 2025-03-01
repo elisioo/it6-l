@@ -1,5 +1,5 @@
---updated
 -- Create the database
+--updated by Eli
 CREATE DATABASE inventorysystem;
 USE inventorysystem;
 
