@@ -1,24 +1,18 @@
--- The database
+-- Create the database
 CREATE DATABASE inventorysystem;
 USE inventorysystem;
 
--- Product Table
-CREATE TABLE Product (
-    product_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    product_name VARCHAR(255) NOT NULL,
-    quantity INT DEFAULT 0,
-    price DECIMAL(10,2) NOT NULL,
-    unitofmeasurement VARCHAR(50) NOT NULL,
-    category_id VARCHAR(25),
-    supplier_id INT,
-    createdbyid INT,
-    createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedbyid INT,
-    updatedate DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES Category(category_id) ON DELETE CASCADE,
-    FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id) ON DELETE SET NULL,
-    FOREIGN KEY (createdbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL,
-    FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
+-- Admin Table
+CREATE TABLE Admin (
+    admin_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(100) NOT NULL,
+    middle_name VARCHAR(100) NULL,
+    last_name VARCHAR(100) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phonenumber VARCHAR(20) NOT NULL,
+    role VARCHAR(255) NOT NULL
 );
 
 -- Category Table
@@ -48,6 +42,12 @@ CREATE TABLE Supplier (
     FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
+-- Customer_Type Table
+CREATE TABLE Customer_Type (
+    type_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    type_name VARCHAR(250) NOT NULL
+);
+
 -- Customer Table
 CREATE TABLE Customer (
     customer_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -65,10 +65,23 @@ CREATE TABLE Customer (
     FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
--- Customer_Type Table
-CREATE TABLE Customer_Type (
-    type_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    type_name VARCHAR(250) NOT NULL
+-- Product Table
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_name VARCHAR(255) NOT NULL,
+    quantity INT DEFAULT 0,
+    price DECIMAL(10,2) NOT NULL,
+    unitofmeasurement VARCHAR(50) NOT NULL,
+    category_id VARCHAR(25),
+    supplier_id INT,
+    createdbyid INT,
+    createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedbyid INT,
+    updatedate DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES Category(category_id) ON DELETE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id) ON DELETE SET NULL,
+    FOREIGN KEY (createdbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL,
+    FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
 -- Membership Table
@@ -76,7 +89,7 @@ CREATE TABLE Membership (
     membership_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     customer_id INT,
     status VARCHAR(50) NOT NULL DEFAULT 'Active',
-    date_repairs DATE NOT NULL,  -- Assuming 'date repairs' is intended as registration date
+    date_repairs DATE NOT NULL,
     date_renewal DATE NULL,
     createdbyid INT,
     createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -112,24 +125,6 @@ CREATE TABLE Points_Details (
     FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
--- Payments Table
-CREATE TABLE Payments (
-    payment_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    customer_id INT,
-    sales_id INT,
-    amount_paid DECIMAL(10,2) NOT NULL,
-    payment_date DATE NOT NULL,
-    payment_method ENUM('Cash', 'Credit', 'GCash') NOT NULL,
-    createdbyid INT,
-    createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedbyid INT,
-    updatedate DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE SET NULL,
-    FOREIGN KEY (sales_id) REFERENCES Sales(sales_id) ON DELETE SET NULL,
-    FOREIGN KEY (createdbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL,
-    FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
-);
-
 -- Sales Table
 CREATE TABLE Sales (
     sales_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -157,6 +152,24 @@ CREATE TABLE SalesLine (
     FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE RESTRICT
 );
 
+-- Payments Table
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    customer_id INT,
+    sales_id INT,
+    amount_paid DECIMAL(10,2) NOT NULL,
+    payment_date DATE NOT NULL,
+    payment_method ENUM('Cash', 'Credit', 'GCash') NOT NULL,
+    createdbyid INT,
+    createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedbyid INT,
+    updatedate DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE SET NULL,
+    FOREIGN KEY (sales_id) REFERENCES Sales(sales_id) ON DELETE SET NULL,
+    FOREIGN KEY (createdbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL,
+    FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
+);
+
 -- Receiving Table
 CREATE TABLE Receiving (
     receiving_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -166,7 +179,6 @@ CREATE TABLE Receiving (
     total_quantity INT NOT NULL,
     total_cost DECIMAL(10,2) NULL,
     status ENUM('Received', 'Pending', 'Cancelled') NOT NULL DEFAULT 'Pending',
-    FOREIGN KEY (order_id) REFERENCES `Order`(order_id) ON DELETE SET NULL,
     FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id) ON DELETE SET NULL
 );
 
@@ -178,7 +190,7 @@ CREATE TABLE Receiving_Details (
     quantity_furnished INT NOT NULL,
     unit_cost DECIMAL(10,2) NOT NULL,
     subtotal_cost DECIMAL(10,2) NOT NULL,
-    condition ENUM('Good', 'Damaged') NOT NULL DEFAULT 'Good',
+    `condition` ENUM('Good', 'Damaged') NOT NULL DEFAULT 'Good',
     createdbyid INT,
     createdate DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedbyid INT,
@@ -225,7 +237,7 @@ CREATE TABLE SupplierReturnDetails (
     product_id INT NOT NULL,
     quantity_returned INT NOT NULL CHECK (quantity_returned > 0),
     unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price > 0),
-    subtotal DECIMAL(10,2) NOT NULL GENERATED ALWAYS AS (quantity_returned * unit_price) STORED,
+    subtotal DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (supplier_return_id) REFERENCES SupplierReturn(supplier_return_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE RESTRICT
 );
@@ -282,22 +294,9 @@ CREATE TABLE CustomerReturnDetails (
     product_id INT NOT NULL,
     quantity_returned INT NOT NULL CHECK (quantity_returned > 0),
     unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price > 0),
-    subtotal DECIMAL(10,2) NOT NULL GENERATED ALWAYS AS (quantity_returned * unit_price) STORED,
+    subtotal DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (customer_return_id) REFERENCES CustomerReturn(customer_return_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE RESTRICT
-);
-
--- Admin Table 
-CREATE TABLE Admin (
-    admin_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(100) NOT NULL,  -- First name, required
-    middle_name VARCHAR(100) NULL,     -- Middle name, optional
-    last_name VARCHAR(100) NOT NULL,    -- Last name, required
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    phonenumber VARCHAR(20) NOT NULL,
-    role VARCHAR(255) NOT NULL
 );
 
 -- Audit_Log Table
