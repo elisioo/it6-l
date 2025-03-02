@@ -108,6 +108,7 @@ CREATE TABLE Points (
     sales_id INT,
     total_purchase DECIMAL(10,2) NOT NULL,
     points_amount INT NOT NULL,
+    FOREIGN KEY (sales_id) REFERENCES Sales(sales_id) ON DELETE CASCADE,
     FOREIGN KEY (membership_id) REFERENCES Membership(membership_id) ON DELETE CASCADE
 );
 
