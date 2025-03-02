@@ -12,7 +12,7 @@ JOIN StockAdjustmentDetails sad ON al.adjustment_id = sad.adjustment_id
 ORDER BY al.adjustment_date DESC
 LIMIT 10;
 
--- Total damaged stock by category
+-- Total damaged stock by category 
 SELECT 
     c.category_name,
     SUM(sad.adjusted_quantity) AS total_damaged,

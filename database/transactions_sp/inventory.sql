@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 CREATE PROCEDURE UpdateInventoryStock(
     IN p_product_id INT,

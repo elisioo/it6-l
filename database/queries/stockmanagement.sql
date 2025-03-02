@@ -1,4 +1,4 @@
--- Get current stock levels for all products
+-- Get current stock levels for all productss
 SELECT 
     p.product_id,
     p.product_name,

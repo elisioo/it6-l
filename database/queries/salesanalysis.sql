@@ -9,7 +9,7 @@ JOIN SalesLine sl ON s.sales_id = sl.sales_id
 GROUP BY s.sale_date
 ORDER BY s.sale_date DESC;
 
--- Top selling products (last 30 days)
+-- Top selling products (last 30 days)s
 SELECT 
     p.product_name,
     SUM(sl.quantity) AS total_sold,

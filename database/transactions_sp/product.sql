@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 -- Add new product
 CREATE PROCEDURE AddProduct(

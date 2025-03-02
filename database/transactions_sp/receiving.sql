@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 CREATE PROCEDURE ProcessReceiving(
     IN p_supplier_id INT,

@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 CREATE PROCEDURE ProcessCustomerReturn(
     IN p_customer_id INT,

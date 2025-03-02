@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 CREATE PROCEDURE ProcessSupplierReturn(
     IN p_supplier_id INT,

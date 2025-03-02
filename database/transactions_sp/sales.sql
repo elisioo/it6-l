@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 -- Create new sale
 CREATE PROCEDURE ProcessSale(

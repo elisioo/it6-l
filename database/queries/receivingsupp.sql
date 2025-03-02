@@ -11,7 +11,7 @@ JOIN Supplier s ON r.supplier_id = s.supplier_id
 ORDER BY r.receiving_date DESC
 LIMIT 10;
 
--- Supplier performance
+-- Supplier performance s
 SELECT 
     s.supplier_name,
     COUNT(r.receiving_id) AS total_receivings,

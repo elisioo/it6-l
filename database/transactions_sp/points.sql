@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 CREATE PROCEDURE AwardPoints(
     IN p_sales_id INT,

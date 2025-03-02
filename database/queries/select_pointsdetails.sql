@@ -10,3 +10,4 @@ SELECT
 FROM Points p
 JOIN Points_Details pd ON p.points_id = pd.points_id
 WHERE p.sales_id = 1;
+--s

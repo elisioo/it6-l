@@ -12,7 +12,7 @@ LEFT JOIN Points_Details p ON pts.points_id = p.points_id
 WHERE m.status = 'Active'
 GROUP BY m.membership_id, c.name, m.status, m.date_renewal;
 
--- Points expiring soon
+-- Points expiring soon s
 SELECT 
     pd.pd_id,
     c.name AS customer_name,

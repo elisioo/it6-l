@@ -11,7 +11,7 @@ JOIN Customer c ON cr.customer_id = c.customer_id
 ORDER BY cr.return_date DESC
 LIMIT 10;
 
--- Most returned products
+-- Most returned products s
 SELECT 
     p.product_name,
     COUNT(crd.return_detail_id) AS total_returns,

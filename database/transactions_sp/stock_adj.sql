@@ -1,4 +1,4 @@
-DELIMITER //
+
 
 CREATE PROCEDURE ProcessStockAdjustment(
     IN p_product_id INT,
