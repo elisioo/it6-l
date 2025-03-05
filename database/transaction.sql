@@ -101,6 +101,32 @@ CREATE TABLE Membership (
     FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
+-- Sales Table
+CREATE TABLE Sales (
+    sales_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    customer_id INT,
+    sale_date DATE NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    createdbyid INT,
+    createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedbyid INT,
+    updatedate DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE SET NULL,
+    FOREIGN KEY (createdbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL,
+    FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
+);
+
+-- SalesLine Table
+CREATE TABLE SalesLine (
+    salesline_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    sales_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price > 0),
+    subtotal_price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (sales_id) REFERENCES Sales(sales_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE RESTRICT
+);
 -- Points Table
 CREATE TABLE Points (
     points_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -128,32 +154,7 @@ CREATE TABLE Points_Details (
     FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
--- Sales Table
-CREATE TABLE Sales (
-    sales_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    customer_id INT,
-    sale_date DATE NOT NULL,
-    total_amount DECIMAL(10,2) NOT NULL,
-    createdbyid INT,
-    createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedbyid INT,
-    updatedate DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE SET NULL,
-    FOREIGN KEY (createdbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL,
-    FOREIGN KEY (updatedbyid) REFERENCES Admin(admin_id) ON DELETE SET NULL
-);
 
--- SalesLine Table
-CREATE TABLE SalesLine (
-    salesline_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    sales_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL CHECK (quantity > 0),
-    unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price > 0),
-    subtotal_price DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (sales_id) REFERENCES Sales(sales_id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE RESTRICT
-);
 
 -- Payments Table
 CREATE TABLE Payments (
